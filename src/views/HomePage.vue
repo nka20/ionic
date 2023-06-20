@@ -1,6 +1,6 @@
 <template>
   <ion-page @login="connected=true">
-    <ion-header :translucent="true">
+    <ion-header :translucent="true" >
     <ion-toolbar color="primary">
           <ion-title size="large">Liste employee</ion-title>
           <ion-icon :icon="person" size="large" slot="end"> </ion-icon>
