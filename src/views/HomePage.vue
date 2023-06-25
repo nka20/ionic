@@ -1,60 +1,107 @@
 <template>
-  <ion-page @login="connected=true">
+  <ion-page>
     <ion-header :translucent="true" >
-    <ion-toolbar color="primary">
-          <ion-title size="large">Liste employee</ion-title>
-          <ion-icon :icon="person" size="large" slot="end"> </ion-icon>
-          <ion-icon :icon="airplaneOutline"> </ion-icon>
+      <ion-toolbar color="primary">
+        <ion-title>Liste Employées</ion-title>
+        <ion-icon :icon="person" size="large" slot="end"></ion-icon>
       </ion-toolbar>
     </ion-header>
-<ion-content :fullscreen="true" class="ion-padding">
-<ion-list>
-
-<ion-item v-for="i in 5" :key="i">
-<ion-avatar slot="start"><img @click="this.$router.push('/image')" src="../asset/logo.jpg"></ion-avatar>
-<ion-label>
-<h2>Bonjour employe num :</h2>
-<p @click="this.$router.push('/detail')">{{i}}</p>
- </ion-label>
-<ion-button color="danger" slot="end" router-link="/add">
- <ion-icon :icon="add"> </ion-icon>
- <ion-label>conge</ion-label>
-</ion-button>
-</ion-item>
-
-
-</ion-list>
-</ion-content>
+    <ion-content :fullscreen="true" class="ion-padding">
+      <ion-list>
+        <ion-item v-for="i in 20" :key="i" >
+          <ion-avatar @click="openPhoto" slot="start" ><img src="../asset/logo.jpg"></ion-avatar>
+          <ion-label>
+            <h2>Employe num : {{i}}</h2>
+            <p>Bonjour</p>
+          </ion-label>
+          <ion-button @click="ajouterConge" slot="end" color="primary">
+            <ion-icon :icon="add"></ion-icon>
+          Congé</ion-button>
+          <ion-button @click="modifierEmploye" slot="end" color="warning">
+            <ion-icon :icon="add"></ion-icon>
+          Modifier</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-content>
   </ion-page>
 </template>
 
 <script>
-import {person} from "ionicons/icons";
-import {airplaneOutline} from "ionicons/icons";
-import {add} from "ionicons/icons";
-import {IonContent,IonLabel, IonHeader, IonPage, IonTitle, IonToolbar,IonIcon,IonList,IonItem,IonAvatar,IonButton } from '@ionic/vue';
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonIcon,
+  IonList,
+  IonItem,
+  IonAvatar,
+  IonLabel,
+  IonButton,
+  modalController,
 
+} from '@ionic/vue';
+
+import {person, add} from "ionicons/icons"
+import AddCongeModal from "../components/AddCongeModal.vue"
+import DetailsPhoto from "../components/DetailsPhoto.vue"
+import ModifierEmploye from "../components/ModifierEmploye.vue"
 export default{
-      data(){
-        return{
-    person,
-    airplaneOutline,
-    add,
-        }
+  data(){
+    return {
+      person,
+      add,
+    }
   },
   components:{
-    IonButton ,
-    IonLabel,
-    IonAvatar,
-    IonList,
-    IonItem ,
-    IonContent,
-     IonHeader,
-      IonPage,
-       IonTitle,
-        IonToolbar,
-        IonIcon
+    IonContent,IonHeader,IonIcon,IonButton,
+    IonPage, IonTitle, IonToolbar,
+    IonList,IonItem, IonAvatar,IonLabel
   },
+  methods:{
+    async ajouterConge() {
+        const modal = await modalController.create({
+          component: AddCongeModal,
+        });
+        modal.present();
+
+        const { data, role } = await modal.onWillDismiss();
+
+        if (role === 'confirm') {
+          this.message = `Hello, ${data}!`;
+        }
+    },
+    async modifierEmploye() {
+        const modal = await modalController.create({
+          component: ModifierEmploye,
+          componentProps:{employe:{nom:"ArtcalO", prenom:"TLW", age:20}}
+        });
+        modal.present();
+
+        const { data, role } = await modal.onWillDismiss();
+
+        if (role === 'confirm') {
+          this.message = `Hello, ${data}!`;
+        }
+    },
+    async openPhoto() {
+        const modal = await modalController.create({
+          component: DetailsPhoto,
+          componentProps:{photo:"https://th.bing.com/th/id/OIP.K-BFJdfUE__-t_MSfFKs5gHaIH?w=183&h=201&c=7&r=0&o=5&dpr=1.5&pid=1.7"},
+          //componentProps:{photo:"/assets/logo.jpg"},
+          backdropDismiss:false,
+          animated:true,
+        });
+        modal.present();
+
+        const { data, role } = await modal.onWillDismiss();
+
+        if (role === 'confirm') {
+          this.message = `Hello, ${data}!`;
+        }
+    },
+  }
 }
 </script>
 

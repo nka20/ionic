@@ -1,27 +1,23 @@
 <template>
   <ion-app>
-    <ion-router-outlet v-if="connected"/>
-    <loginView v-else @loginEmited="connected=true"/>
+    <ion-router-outlet v-if="connected" />
+    <LoginView v-else @loginEmited="connected=true"/>
   </ion-app>
 </template>
 
 <script>
-import LoginView from './pages/LoginView.vue'
+import LoginView from "./components/LoginView.vue"
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
-import { defineComponent } from 'vue';
-//import LoginViewVue from './pages/LoginView.vue';
-
-export default defineComponent( {
-  name:'app',
+export default{
   components:{
     IonApp,
     IonRouterOutlet,
     LoginView
   },
   data(){
-return{
-  connected:false
-}
+    return{
+      connected:false
+    }
   }
-});
+}
 </script>
