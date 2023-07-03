@@ -4,7 +4,7 @@
       <ion-buttons slot="start">
         <ion-button color="medium" @click="cancel">Cancel</ion-button>
       </ion-buttons>
-      <ion-title align="center">Modifier employé</ion-title>
+      <ion-title>Modifier employé</ion-title>
       <ion-buttons slot="end">
         <ion-button @click="confirm" :strong="true">Confirm</ion-button>
       </ion-buttons>
@@ -15,10 +15,10 @@
       <ion-input label-placement="stacked" label="Nom Employé" v-model="employeObj.nom" placeholder="Your name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input label-placement="stacked" label="Prenom" v-model="employeObj.prenom" placeholder="Your username"></ion-input>
+      <ion-input label-placement="stacked" label="Prenom" v-model="employeObj.prenom" placeholder="Your name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input label-placement="stacked" label="Age" v-model="employeObj.age" placeholder="Your age"></ion-input>
+      <ion-input label-placement="stacked" label="Age" v-model="employeObj.age" placeholder="Your name"></ion-input>
     </ion-item>
     <ion-button expand="block">Modifier</ion-button>
   </ion-content>

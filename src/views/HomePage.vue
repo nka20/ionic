@@ -6,20 +6,21 @@
         <ion-icon :icon="person" size="large" slot="end"></ion-icon>
       </ion-toolbar>
     </ion-header>
+
     <ion-content :fullscreen="true" class="ion-padding">
       <ion-list>
-        <ion-item v-for="i in 20" :key="i" >
-          <ion-avatar @click="openPhoto" slot="start" ><img src="../asset/logo.jpg"></ion-avatar>
-          <ion-label>
-            <h2>Employe num : {{i}}</h2>
-            <p>Bonjour</p>
+        <ion-item v-for="employe in listeEmployes" :key="employe.id" >
+          <ion-label :class="{en_conge:enConge(employe)}">
+            <h2>{{employe.nom}} {{employe.prenom}}</h2>
+            <p>{{employe.genre}}</p>
           </ion-label>
-          <ion-button @click="ajouterConge" slot="end" color="primary">
+
+          <ion-button v-if="checkConge(employe)" @click="ajouterConge(employe.id)" slot="end" color="primary">
             <ion-icon :icon="add"></ion-icon>
-          Congé</ion-button>
+          </ion-button>
           <ion-button @click="modifierEmploye" slot="end" color="warning">
-            <ion-icon :icon="add"></ion-icon>
-          Modifier</ion-button>
+            <ion-icon :icon="pencil"></ion-icon>
+          </ion-button>
         </ion-item>
       </ion-list>
     </ion-content>
@@ -36,14 +37,13 @@ import {
   IonIcon,
   IonList,
   IonItem,
-  IonAvatar,
   IonLabel,
   IonButton,
   modalController,
 
 } from '@ionic/vue';
 
-import {person, add} from "ionicons/icons"
+import {person, add, pencil} from "ionicons/icons"
 import AddCongeModal from "../components/AddCongeModal.vue"
 import DetailsPhoto from "../components/DetailsPhoto.vue"
 import ModifierEmploye from "../components/ModifierEmploye.vue"
@@ -52,17 +52,39 @@ export default{
     return {
       person,
       add,
+      pencil,
+       listeEmployes:[
+          {
+              id:1,
+              nom:"Artcal'O",
+              prenom:"Lone Wolf",
+              age:45,
+              genre:"F",
+              conge_debut:null,
+              conge_fin:null
+          },
+          {
+              id:2,
+              nom:"TLW",
+              prenom:"Wolverine",
+              age:45,
+              genre:"F",
+              conge_debut:null,
+              conge_fin:null
+          },
+      ]
     }
   },
   components:{
     IonContent,IonHeader,IonIcon,IonButton,
     IonPage, IonTitle, IonToolbar,
-    IonList,IonItem, IonAvatar,IonLabel
+    IonList,IonItem,IonLabel
   },
   methods:{
-    async ajouterConge() {
+    async ajouterConge(employeId) {
         const modal = await modalController.create({
           component: AddCongeModal,
+          componentProps:{idEmployeProps:employeId}
         });
         modal.present();
 
@@ -70,6 +92,12 @@ export default{
 
         if (role === 'confirm') {
           this.message = `Hello, ${data}!`;
+        }
+        if (role === 'addCongeEmited') {
+          let idx = this.listeEmployes.findIndex(x => x.id=data.idEmploye)
+          this.listeEmployes[idx].conge_debut=data.conge_debut
+          this.listeEmployes[idx].conge_fin=data.conge_fin
+          console.log(this.listeEmployes)
         }
     },
     async modifierEmploye() {
@@ -88,8 +116,7 @@ export default{
     async openPhoto() {
         const modal = await modalController.create({
           component: DetailsPhoto,
-          componentProps:{photo:"https://th.bing.com/th/id/OIP.K-BFJdfUE__-t_MSfFKs5gHaIH?w=183&h=201&c=7&r=0&o=5&dpr=1.5&pid=1.7"},
-          //componentProps:{photo:"/assets/logo.jpg"},
+          componentProps:{photo:"/assets/logo.jpg"},
           backdropDismiss:false,
           animated:true,
         });
@@ -101,6 +128,13 @@ export default{
           this.message = `Hello, ${data}!`;
         }
     },
+    checkConge(employe){
+        return !employe.conge_debut && !employe.conge_fin
+      },
+    enConge(employe){
+        let today = new Date()
+        return today >= new Date(employe.conge_debut) && today < new Date(employe.conge_fin)
+      },
   }
 }
 </script>
@@ -132,5 +166,11 @@ export default{
 
 #container a {
   text-decoration: none;
+}
+.en_conge{
+  background-color:red;
+}
+.en_conge button{
+  background-color:blue
 }
 </style>
