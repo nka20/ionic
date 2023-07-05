@@ -2,9 +2,9 @@
   <ion-header>
     <ion-toolbar color="primary">
       <ion-buttons slot="start">
-        <ion-button color="medium" @click="cancel">Cancel</ion-button>
+        <ion-button color="danger" @click="cancel">Cancel</ion-button>
       </ion-buttons>
-      <ion-title>Modifier employé</ion-title>
+      <ion-title align="center">Modifier employé</ion-title>
       <ion-buttons slot="end">
         <ion-button @click="confirm" :strong="true">Confirm</ion-button>
       </ion-buttons>
