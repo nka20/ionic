@@ -18,7 +18,7 @@
           <ion-button v-if="checkConge(employe)" @click="ajouterConge(employe.id)" slot="end" color="primary">
             <ion-icon :icon="add"></ion-icon>
           </ion-button>
-          <ion-button @click="modifierEmploye" slot="end" color="warning">
+          <ion-button @click="modifierEmploye(employe)" slot="end" color="warning" :name="employe">
             <ion-icon :icon="pencil"></ion-icon>
           </ion-button>
         </ion-item>
@@ -94,16 +94,16 @@ export default{
           this.message = `Hello, ${data}!`;
         }
         if (role === 'addCongeEmited') {
-          let idx = this.listeEmployes.findIndex(x => x.id=data.idEmploye)
+          let idx =this.listeEmployes.findIndex(x => x.id==data.idEmploye)
           this.listeEmployes[idx].conge_debut=data.conge_debut
           this.listeEmployes[idx].conge_fin=data.conge_fin
           console.log(this.listeEmployes)
         }
     },
-    async modifierEmploye() {
+    async modifierEmploye(employe) {
         const modal = await modalController.create({
           component: ModifierEmploye,
-          componentProps:{employe:{nom:"ArtcalO", prenom:"TLW", age:20}}
+          componentProps:{employe:employe}
         });
         modal.present();
 
