@@ -20,7 +20,7 @@
     <ion-item>
       <ion-input label-placement="stacked" label="Age" v-model="employeObj.age" placeholder="Your name"></ion-input>
     </ion-item>
-    <ion-button expand="block">Modifier</ion-button>
+    <ion-button expand="block" @click="retour">Modifier</ion-button>
   </ion-content>
 </template>
 
@@ -54,6 +54,9 @@
       confirm() {
         return modalController.dismiss(this.name, 'confirm');
       },
+      retour(){
+        return modalController.dismiss(null,'cancel')
+      }
     },
   });
 </script>
